@@ -1,3 +1,126 @@
+
+
+// Tempo total:
+// 90 minutos
+
+// 45 minutos -> lógica
+// 45 minutos -> SQL
+
+// TAREFA 01 - Lógica de Programação (Nível Hard)
+
+// Cenário
+
+// Uma prefeitura deseja controlar os atendimentos
+// realizados em uma unidade de saúde
+
+// Cada atendimento possui:
+
+// código do atendimento
+// nome do paciente
+// idade
+// especialidade
+// prioridade
+// 1 = baixa
+// 2 = média
+// 3 = alta
+// tempo de atendimento em minutos
+
+// REQUISITOS
+
+// PARTE 1 - Estrutura
+
+// Criar:
+
+// Registro:
+// Atendimento
+
+// com os campos necessários
+
+// Vetor:
+// vetor[1..15] de Atendimento
+
+// PARTE 2 - Entrada de dados
+
+// Ler os dados dos 15 atendimentos
+
+// PARTE 3 - Processamentos
+
+// A) Validação de dados
+
+// Não permitir:
+
+// idade menor que 0
+// prioridade fora de 1 até 3
+// tempo menor ou igual a 0
+
+// Repetir a leitura até ficar válida
+
+// B) Estatísticas
+
+// Mostrar:
+
+// 1.
+// Quantidade de atendimentos
+// com prioridade alta
+
+// 2.
+// Média do tempo de atendimento
+
+// 3.
+// Paciente com maior tempo de atendimento
+
+// 4.
+// Percentual de pacientes idosos
+// idade maior ou igual a 60
+
+// C) Busca
+
+// Solicitar:
+// código do atendimento
+
+// Realizar:
+// busca linear
+
+// Exibir:
+// todos os dados
+
+// D) Ordenação múltipla
+
+// Ordenar por:
+
+// prioridade decrescente
+
+// Em caso de empate:
+// maior tempo primeiro
+
+// E) Modularização obrigatória
+
+// Criar:
+
+// 1 função para média
+// 1 função para percentual
+// 1 procedimento para ordenação
+// 1 procedimento para busca
+
+// F) Matriz
+
+// Criar:
+
+// matriz[1..3,1..2]
+
+// Onde:
+
+// Linhas:
+// prioridades
+
+// Colunas:
+
+// menores de 60 anos
+// maiores ou iguais a 60 anos
+
+// Exibir a matriz final
+
+
 Algoritmo "Atendimentos"
 
 
