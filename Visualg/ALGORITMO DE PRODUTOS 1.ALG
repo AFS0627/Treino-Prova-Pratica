@@ -1,3 +1,53 @@
+// Cada produto possui:
+// código (inteiro)
+// nome (cadeia)
+// quantidade (inteiro)
+// preço (real)
+
+// Requisitos
+
+// Desenvolva um algoritmo que:
+
+// 1) Estrutura de Dados
+// Criar um registro chamado Produto
+// Criar um vetor de 10 produtos
+
+// 2) Entrada de Dados
+// Ler os dados dos 10 produtos
+
+// 3) Processamentos
+
+// a) Maior valor em estoque
+// Calcular qual produto possui o maior valor total
+// Valor total = quantidade * preço
+// Exibir nome e valor total
+
+// b) Média de preços
+// Calcular a média dos preços dos produtos
+
+// c) Contador condicional
+// Contar quantos produtos possuem quantidade menor que 5
+
+// d) Busca
+// Solicitar um código ao usuário
+// Realizar busca linear
+// Exibir os dados do produto, se encontrado
+
+// e) Ordenação
+// Ordenar o vetor por preço crescente usando Bubble Sort
+
+// f) Modularização
+// Criar pelo menos:
+// 1 função para cálculo de média
+// 1 procedimento para ordenação
+
+// Saída esperada:
+// Produto com maior valor total
+// Média dos preços
+// Quantidade de produtos com estoque baixo
+// Resultado da busca
+// Lista ordenada por preço
+
 algoritmo "Algoritmo de produtos 1"
 
 
@@ -86,7 +136,7 @@ inicio
       
       escreval("")
       escreval("------------------- Produto com maior valor total -----------------")
-      escreval("cod:",maiorValor.cod,"  nome:",maiorValor.nome,"  quantidade:",maiorValor.qntd,"  preco:",maiorValor.preco)
+      escreval("cod:",maiorValor.cod,"  nome:",maiorValor.nome,"  quantidade:",maiorValor.qntd,"  preco:",maiorValor.preco,"  valor total:R$", maiorValor.preco * maiorValor.qntd)
       escreval("")
       escreval("------------------- Produtos com estoque baixo -----------------")
       escreval(qntd5)
