@@ -332,18 +332,42 @@ alter table aluno add column email varchar(50);
 alter table curso alter column valor_mensalidade set data type decimal(12,2);
 alter table aluno drop column email;
 
-select a.nome c.nome from aluno a join curso c on a.id_curso = c.id_curso order by c.nome, a.nome;
-select * from cursos c where exists (select 1 from aluno a where c.id_curso = a.id_curso);
-select * from alunos where id_curso in (select id_curso from curso);
-select c.nome, sum(a.id_aluno) from curso c inner join aluno a on a.id_curso = c.id_curso group by c.id_curso, c.id_nome;
+select a.nome, c.nome from aluno a join curso c on a.id_curso = c.id_curso order by c.nome, a.nome;
+select * from curso c where exists (select 1 from aluno a where c.id_curso = a.id_curso);
+select * from aluno where id_curso in (select id_curso from curso);
+select c.nome, count(a.id_aluno) from curso c inner join aluno a on a.id_curso = c.id_curso group by c.id_curso, c.nome;
 select avg(p.valor_pago) from pagamento p inner join aluno a on p.id_aluno = a.id_aluno inner join curso c on c.id_curso = a.id_curso where c.status = 'ATIVO';
-select c.nome, sum(a.id_aluno) from curso c inner join aluno a on a.id_aluno = c.id_aluno group by c.id_curso, c.nome having sum(a.id_aluno) > 3;
+select c.nome, count(a.id_aluno) from curso c inner join aluno a on a.id_curso = c.id_curso group by c.id_curso, c.nome having sum(a.id_aluno) > 3;
 
 update pagamento set status_pagamento = 'ATRASADO' where status_pagamento = 'PENDENTE' and valor_pago < 500;
-update cursos set valor_mensalidade = valor_mensalidade * 1.10 where status = 'ATIVO';
+update curso set valor_mensalidade = valor_mensalidade * 1.10 where status = 'ATIVO';
 update aluno set bolsa = 'S' where idade > 60;
 update aluno set cidade = 'BLUMENAU' where id_curso = (select id_curso from curso where nome = 'SISTEMAS DE INFORMAÇÃO');
 
 delete from pagamento where status_pagamento = 'ATRASADO';
 delete from cursos c where status = 'INATIVO' and not exists (select 1 from aluno a where c.id_curso = a.id_curso); 
+
+select cidade from aluno where bolsa = 'S'
+UNION
+select cidade from alunos where bolsa = 'N';
+
+select cidade from aluno where bolsa = 'S'
+UNION all
+select cidade from alunos where bolsa = 'N';
+union all adiciona duplicatas
+
+SELECT a.nome,
+       p.valor_pago
+FROM aluno a
+INNER JOIN pagamento p
+ON p.id_aluno = a.id_aluno
+WHERE p.valor_pago > (
+    SELECT AVG(valor_pago)
+    FROM pagamento
+);
+select c.nome, count(a.id_aluno), avg(a.idade) from curso c inner join aluno a on a.id_curso = c.id_curso group by c.id_curso, c.nome having avg(a.idade) > 30;
+select * from aluno where not exists (select 1 from pagamento WHERE p.id_aluno = a.id_aluno);
+select c.id_curso, c.nome, count(a.id_aluno) from curso c inner join aluno a on a.id_curso = c.id_curso group by id_curso having count(a.id_aluno) = max(a.id_aluno);
+
+update curso set status = 'INATIVO' where id_curso not in (select id_curso from aluno);
 
