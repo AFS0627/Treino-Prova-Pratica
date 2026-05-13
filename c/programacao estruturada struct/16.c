@@ -16,6 +16,10 @@ void cadatraProdutos(struct produto p[], int n){
         scanf("%f",&p[i].preco);
         printf("quantidade produto %d: ",i+1);
         scanf("%d",&p[i].qntd);
+        while(p[i].qntd < 0){
+           printf("quantidade produto %d precisa ser maior que 0: ",i+1);
+        scanf("%d",&p[i].qntd); 
+        }
     }
 }
 void pedido(struct produto p[],int n,int codBusca,int qntd){
@@ -29,7 +33,7 @@ void pedido(struct produto p[],int n,int codBusca,int qntd){
             
         }else if(codBusca == p[i].cod){
             encontrado = 1;
-            printf("\nnão ha quantidade o suficiente para realizar o pedido quantidade atual e: ",p[i].qntd);
+            printf("\nnão ha quantidade o suficiente para realizar o pedido quantidade atual e: %d",p[i].qntd);
             break;
         }
     }
@@ -44,8 +48,7 @@ int main(){
     struct produto p[n];
 
     cadatraProdutos(p,n);
-    busca = 1;
-    while (busca != 0){
+    while (1){
     printf("\n\nCodigo do produto para o pedido ou 0 para encerrar: ");
     scanf("%d",& busca);
     if(busca == 0){

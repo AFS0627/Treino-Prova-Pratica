@@ -28,7 +28,7 @@ void encontrarReceita (struct receita r[], int n,char busca[]){
 }
 
 int main(){
-    int n = 2;
+    int n = 5;
     struct receita r[5];
     char nomeBusca[25];
     for (int i = 0;i < n;i++){
