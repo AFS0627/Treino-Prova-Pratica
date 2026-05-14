@@ -69,5 +69,57 @@ INSERT INTO matricula (id_matricula, id_aluno, id_curso, data_matricula, situaca
 (1007, 100, 30, '2026-02-15', 'ATIVA'),
 (1008, 102, 50, '2026-02-20', 'TRANCADA');
 
+select a.nome,c.nome,m.situacao from aluno a inner join matricula m on m.id_aluno = a.id_aluno inner join curso c on c.id_curso = m.id_curso order by a.nome;
+select id_curso, nome from curso where valor_mensalidade >= 500 and status = 'ATIVO';
+select id_aluno, nome from aluno where percentual_bolsa >= 50;
+select c.id_curso, c.nome, count(m.id_aluno) from curso c inner join matricula m on m.id_curso = c.id_curso group by c.id_curso,c.nome;
+select c.id_curso, c.nome from curso c where not exists(select 1 from matricula m where m.id_curso = c.id_curso);
+select id_aluno,nome from aluno where percentual_bolsa > 0
+union 
+select id_aluno,nome from aluno where percentual_bolsa = 0;
+select  max(valor_mensalidade),min(valor_mensalidade),avg(valor_mensalidade) from curso;
+select a.id_aluno, a.nome, d.bloco from aluno a inner join matricula m on m.id_aluno = a.id_aluno inner join curso c on c.id_curso = m.id_curso inner join departamento d 
+on d.id_departamento = c.id_departamento where d.bloco = 'A';
+
+update curso set valor_mensalidade = valor_mensalidade * 1.10 where status = 'ATIVO';
+update curso set status = 'INATIVO' where id_curso not in(select id_curso from matricula);
+update matricula set situacao = 'CANCELADA' where id_aluno in(select id_aluno from aluno where percentual_bolsa > 70);
+delete from curso
+where status = 'INATIVO'
+and id_curso not in(
+    select id_curso from matricula
+);
 
 
+select * from aluno where idade > (select avg(idade) from aluno);
+select c.id_curso, c.nome,count(m.id_aluno) from curso c inner join matricula m on m.id_curso = c.id_curso group by c.id_curso,c.nome having count(m.id_aluno) > 2;
+select a.id_aluno, a.nome, count(m.id_curso) from aluno a inner join matricula m on m.id_aluno = a.id_aluno group by a.id_aluno,a.nome having count(m.id_curso) > 1;
+select * from curso where valor_mensalidade = (select max(valor_mensalidade) from curso);
+
+create view vw_relatorio_matriculas as
+select
+a.nome as aluno,
+c.nome as curso,
+d.nome as departamento,
+m.situacao
+from matricula m
+inner join aluno a
+on a.id_aluno = m.id_aluno
+inner join curso c
+on c.id_curso = m.id_curso
+inner join departamento d
+on d.id_departamento = c.id_departamento;
+
+create index idx_email_aluno
+on aluno(email);
+
+select c.id_curso,c.nome, sum(c.valor_mensalidade - (c.valor_mensalidade * (a.percentual_bolsa/100))) as total_arrecadado from curso c inner join matricula m on c.id_curso = m.id_curso 
+inner join aluno a on m.id_aluno = a.id_aluno where m.situacao = 'ATIVA' group by c.id_curso,c.nome ;
+
+select d.id_departamento, d.nome from departamento d where exists(select 1 from curso c where d.id_departamento = c.id_departamento and c.status = 'ATIVO');
+
+select * from aluno where id_aluno not in (select id_aluno from matricula);
+
+alter table aluno add constraint ck_idade_aluno check(idade >= 16 and idade <=100);
+
+delete permite condicão e apaga linhas o truncate apaga todas as linhas e o drop apaga a tabela
