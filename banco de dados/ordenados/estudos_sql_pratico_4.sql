@@ -1,7 +1,7 @@
 create table setores(
 id_setor int generated always as identity primary key,
 nome varchar(80) not null unique,
-andar int check(andar > 0);
+andar int check(andar > 0)
 );
 
 create table medicos(
@@ -31,7 +31,9 @@ id_medico int,
 id_paciente int,
 data_consulta date not null,
 status varchar(20) default 'AGENDADA',
-constraint chk_status check(status in('AGENDADA','REALIZADA','CANCELADA'))
+constraint chk_status check(status in('AGENDADA','REALIZADA','CANCELADA')),
+constraint fk_medicos_consultas foreign key (id_medico) references medicos (id_medico),
+constraint fk_paciente_consultas foreign key (id_paciente) references pacientes(id_paciente)
 );
 
 alter table pacientes add column telefone varchar(20);
@@ -47,6 +49,39 @@ select * from medicos where id_setor in (select id_setor from setores where anda
 select * from pacientes p where exists (select 1 from consultas c where p.id_paciente = c.id_paciente);
 
 select * from medicos m where not exists (select 1 from consultas c where m.id_medico = c.id_medico);
+
+select * from medicos m where m.salario > (select avg(me.salario) from medicos me where me.id_setor = m.id_setor);
+
+select s.nome,count(m.id_medico) as qntd_medicos from setores inner join medicos m on m.id_setor = s.id_setor group by s.nome having count(m.id_medico) > 3;
+
+update medicos set salario = salario * 1.15 where id_setor in(select id_setor from setores where andar > 5);
+
+delete from setores s where not exists(select 1 from medicos m where s.id_setor = m.id_setor);
+
+select p.nome as nome_paciente,m.nome as nome_medico,c.data_consulta from pacientes p inner join consultas c on c.id_paciente = p.id_paciente inner join medicos m on m.id_medico = c.id_medico;
+
+select  m.*, c.id_consulta from medicos m left join consultas c on c.id_medico = m.id_medico;
+
+select m.id_medico,m.nome as nome_medico,s.* from medicos m right join setores s on m.id_setor = s.id_setor;
+
+create view vw_consultas_medicas as select p.nome as nome_paciente,m.nome as nome_medico,m.area_atuacao,c.data_consulta 
+from pacientes p inner join consultas c on c.id_paciente = p.id_paciente inner join medicos m on m.id_medico = c.id_medico where c.data_consulta > '2025-01-01';
+
+select max(salario) as maior_salario,min(salario) as menor_salario,avg(salario) as media_salario from medicos;
+
+select nome,salario, case when salario < 5000 then 'BAIXO' when salario between 5000 and 9000 then 'MEDIO' when salario > 9000 then 'ALTO' else 'SEM SALARIO' end as Classificacao
+from medicos;
+
+create view paciente_medico_status as select p.nome as nome_paciente,m.nome as nome_medico, c.status from pacientes p inner join consultas c on c.id_paciente = p.id_paciente
+inner join medicos m on m.id_medico = c.id_medico;
+
+select * from pacientes p where not exists (select 1 from consultas c where p.id_paciente = c.id_paciente);
+
+nome está fora do group by 
+
+update sem where atualiza tudo
+
+select m.nome as nome_medico, count(c.id_consulta) as numero_consultas from medicos m inner join consultas c on c.id_medico = m.id_medico group by m.nome having count(c.id_consulta) > 10;
 
 
 
